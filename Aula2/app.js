@@ -41,6 +41,21 @@ app.post('/vagas', async (req, res) => {
     }
 })
 
+app.put('/vagas:id', async (req, res) => {
+    let findId = req.params.id;
+})
+
+app.delete('/vagas:id', async (req, res) => {
+    let findId = req.params.id;
+    let count = vagas.length;
+
+    while (count > 0) {
+        if (vagas[count-1].id == findId){
+            vagaIndex = vagas;
+        }
+    }
+})
+
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 })
