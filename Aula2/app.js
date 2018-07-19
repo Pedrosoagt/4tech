@@ -45,6 +45,24 @@ app.put('/vagas:id', async (req, res) => {
     let findId = req.params.id;
 })
 
+app.put('/vagas:id', async (req, res) => {
+    try {
+        if(!req.body) {
+            return res.status(403).send('Para alterar um usuário, é necessário passar algum valor.');
+        }
+        let index = await vagas.findIndex(vaga => vaga.id === req.params.id);
+        if (index >= 0) {
+            Object.keys(req.body).forEach(vaga => {
+                vagas[index][job] = req.body[vaga]
+            })
+            return res.send(`Vaga com id ${req.params.id} alterada com sucesso`)
+        }
+        return res.send(`nao foi encontrada vaga com esse id`)
+    }catch(error) {
+        return res.status(500).send('Internal error')
+    }
+})
+
 app.delete('/vagas:id', async (req, res) => {
     let findId = req.params.id;
     let count = vagas.length;
