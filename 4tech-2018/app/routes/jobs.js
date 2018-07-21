@@ -19,12 +19,19 @@ module.exports = app => {
         }
     })
 
-    // app.get('/jobs', async (req, res) => {
-    //     return res.send(jobs);
-    // })
-
     app.get('/jobs/:id', async (req, res) => {
-        return res.send(jobs.find(el => el.id === req.params.id));
+        try {
+            const getUrlId = req.params.id;
+            const findJob = jobsCollection.doc(getUrlId);
+
+            if(findJob) {
+                return res.send(findJob.data());
+            } else {
+                return res.send(`nenhum job com id: ${getUrlId}`);
+            }
+        } catch (error) {
+            return res.status(500).send(error);
+        }
     })
 
     app.post('/jobs', async (req, res) => {
@@ -41,17 +48,21 @@ module.exports = app => {
         }
     })
 
-    // app.post('/jobs', async (req, res) => {
-    //     try {
-    //         let jobsLength = jobs.length;
-    //         let job = createJob(req.body);
-    //         jobs.push(job);
-    //         if (jobs.length > jobsLength) return res.send('Adicionado com sucesso');
-    //         return res.status(500).send('Ops! Aconteceu um erro tentando cadastrar a vaga.');
-    //     } catch (error) {
-    //         return res.status(500).send(error);        
-    //     }
-    // })
+    app.delete('/jobs/:id', async (req, res) => {
+        try {
+            const getId = req.params.id;
+            const del = jobsCollection.doc(getId);
+
+            if (del) {
+                del.delete();    
+                return res.send(`A vaga com o id ${req.params.id} foi excluída com successo`);
+            } else {
+                return res.send(`Vaga com o id ${req.params.id} não encontrada`)
+            }  
+        }catch (error) {
+            return res.status(500).send(error);
+        }
+    })
 
     app.put('/jobs/:id', async (req, res) => {
         try {
@@ -68,17 +79,6 @@ module.exports = app => {
             return res.send("nao foi encontrado vaga com esse id");
         } catch (error) {
             return res.status(500).send(error);
-        }
-    })
-
-    app.delete('/jobs/:id', (req, res) => {
-        try {
-            let length = jobs.length;
-            jobs.splice(jobs.findIndex(el => el.id === req.params.id), 1);
-            if (jobs.length < length) return res.send(`A vaga com o id ${req.params.id} com successo`);
-            else return res.status(500).send(`Não foi possível deletar a vaga ${req.params.id}`);
-        } catch (error) {
-            return res.status(500).send(error);        
         }
     })
 
@@ -110,3 +110,36 @@ module.exports = app => {
         obj.isActive 
     )
 }
+
+//funcoes antigas
+
+ // app.get('/jobs', async (req, res) => {
+    //     return res.send(jobs);
+    // })
+
+// app.post('/jobs', async (req, res) => {
+    //     try {
+    //         let jobsLength = jobs.length;
+    //         let job = createJob(req.body);
+    //         jobs.push(job);
+    //         if (jobs.length > jobsLength) return res.send('Adicionado com sucesso');
+    //         return res.status(500).send('Ops! Aconteceu um erro tentando cadastrar a vaga.');
+    //     } catch (error) {
+    //         return res.status(500).send(error);        
+    //     }
+    // })
+
+    // app.delete('/jobs/:id', (req, res) => {
+    //     try {
+    //         let length = jobs.length;
+    //         jobs.splice(jobs.findIndex(el => el.id === req.params.id), 1);
+    //         if (jobs.length < length) return res.send(`A vaga com o id ${req.params.id} com successo`);
+    //         else return res.status(500).send(`Não foi possível deletar a vaga ${req.params.id}`);
+    //     } catch (error) {
+    //         return res.status(500).send(error);        
+    //     }
+    // })
+
+    // app.get('/jobs/:id', async (req, res) => {
+    //     return res.send(jobs.find(el => el.id === req.params.id));
+    // })
