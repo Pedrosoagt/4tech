@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
 import Card from './Card';
 
+import vagas from '../../../assets/jobs';
+
 class JobList extends Component {
+
+    state = {
+        jobs: [],
+        selectedId: null
+    }
+
     constructor () {
         super();
     }
 
-    jobRemoveHandler = (id) => {
-        window.confirm(`Deseja realmente excluir essa vaga id: ${id}?`);
+    componentDidMount() {
+        this.setState({ jobs: vagas });
+    }
+
+    jobRemoveHandler = (id, name) => {
+        window.confirm(`Deseja realmente excluir essa vaga id: ${name}?`);
     }
 
     jobUpdateHandler = (id) => {
@@ -15,26 +27,24 @@ class JobList extends Component {
     }
 
     render () {
+
+        let vagasEncontradas = 
+            this.state.jobs.map(vaga => {
+                return <Card 
+                    name={vaga.name}
+                    description={vaga.description}
+                    salary={vaga.salary}
+                    area={vaga.area}
+                    updateHandler={() => this.jobUpdateHandler(vaga.id)}
+                    removeHandler={() => this.jobRemoveHandler(vaga.id, vaga.name)}
+                ></Card> 
+            })
+
         return (
             <div className="container">
                 <div className="row"> 
                     <div className="col-sm-12 col-md-6 col-lg-4 mb-3">
-                        <Card
-                            updateHandler={() => this.jobUpdateHandler(1)}
-                            removeHandler={() => this.jobRemoveHandler(2)}
-                        ></Card>
-                    </div>
-                    <div className="col-sm-12 col-md-6 col-lg-4 mb-3">
-                    <Card
-                        updateHandler={() => this.jobUpdateHandler(1)}
-                        removeHandler={() => this.jobRemoveHandler(1)}
-                    ></Card>
-                    </div>
-                    <div className="col-sm-12 col-md-6 col-lg-4 mb-3">
-                    <Card
-                        updateHandler={() => this.jobUpdateHandler(1)}
-                        removeHandler={() => this.jobRemoveHandler(1)}
-                    ></Card>
+                        {vagasEncontradas}
                     </div>
                     {/* {props.children} */}
                 </div>
