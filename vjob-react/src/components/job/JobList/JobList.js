@@ -6,8 +6,7 @@ import vagas from '../../../assets/jobs';
 class JobList extends Component {
 
     state = {
-        jobs: [],
-        selectedId: null
+        jobs: []
     }
 
     constructor () {
@@ -30,23 +29,24 @@ class JobList extends Component {
 
         let vagasEncontradas = 
             this.state.jobs.map(vaga => {
-                return <Card 
-                    name={vaga.name}
-                    description={vaga.description}
-                    salary={vaga.salary}
-                    area={vaga.area}
-                    updateHandler={() => this.jobUpdateHandler(vaga.id)}
-                    removeHandler={() => this.jobRemoveHandler(vaga.id, vaga.name)}
-                ></Card> 
+                return (
+                    <div className="col-sm-12 col-md-6 col-lg-4 mb-3">    
+                        <Card 
+                            name={vaga.name}
+                            description={vaga.description}
+                            salary={vaga.salary}
+                            area={vaga.area}
+                            updateHandler={() => this.jobUpdateHandler(vaga.id)}
+                            removeHandler={() => this.jobRemoveHandler(vaga.id, vaga.name)}
+                        ></Card>
+                    </div>
+                ) 
             })
 
         return (
             <div className="container">
                 <div className="row"> 
-                    <div className="col-sm-12 col-md-6 col-lg-4 mb-3">
-                        {vagasEncontradas}
-                    </div>
-                    {/* {props.children} */}
+                    {vagasEncontradas}
                 </div>
             </div>
         )
