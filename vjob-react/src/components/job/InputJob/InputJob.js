@@ -2,8 +2,6 @@ import React from 'react';
 import Container from '../../layout/Container/Container';
 
 const formulario = () => (
-    // <div className="container">
-    //     <div class="card card-body">
     <form>
         <div className="form-group">
             <label htmlFor="exampleInputText1">Nome</label>
@@ -48,11 +46,9 @@ const formulario = () => (
             </div>
         </div>
         <div className='text-right'>
-            <button type="submit" className="btn btn-success" onclick="">Criar Vaga</button>
+            <button type="submit" className="btn btn-success">Criar Vaga</button>
         </div>
     </form>
-    //     </div>
-    // </div>
 )
 
 export default formulario;

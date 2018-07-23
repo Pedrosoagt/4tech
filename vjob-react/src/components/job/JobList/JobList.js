@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Card from './Card';
-import vagas from '../../../assets/jobs';
+import vagas from '../../../assets/jobs'; //json(bd) não mais usado 
 import Load from '../../navigation/Loading/Loading.js'
+import axios from 'axios'
 
 class JobList extends Component {
 
@@ -15,7 +16,14 @@ class JobList extends Component {
     }
 
     componentDidMount() {
-        this.setState({ jobs: vagas, loading: false });
+        // this.setState({ jobs: vagas, loading: false });
+        axios.get('/jobs')
+            .then( response => {
+                this.setState({jobs: response.data, loading: false});
+            })
+            .catch(error => {
+                console.error(error);
+            })
     }
 
     jobRemoveHandler = (id, name) => {
@@ -31,11 +39,12 @@ class JobList extends Component {
             return <Load/>
         } 
         let vagasEncontradas = 
-            this.state.jobs.map(vaga => {
+            this.state.jobs.map((vaga, index) => {
                 return (
                     <div className="col-sm-12 col-md-6 col-lg-4 mb-3">    
                         <Card 
-                            vaga = {vaga}
+                            key={index}
+                            vaga={vaga}
                             // name={vaga.name}
                             // description={vaga.description}
                             // salary={vaga.salary}
