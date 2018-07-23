@@ -6,7 +6,6 @@ import tester from '../../../assets/images/tester.png';
 
 const card = (props) => {
     let imagem = null;
-
     return (
         <div className="card" style={{width:"22rem"}}>
             <img className="" src={dev} alt="Card image cap" height="180"/>

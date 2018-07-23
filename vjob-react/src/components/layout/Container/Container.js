@@ -1,7 +1,10 @@
 import React from 'react';
 
-const container = () => (
-    <div className="container"/>
+const container = (props) => (
+    
+    <div className="container">
+        {props.children}
+    </div>
 )
 
 export default container;

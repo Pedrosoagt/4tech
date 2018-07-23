@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Card from './Card';
-
 import vagas from '../../../assets/jobs';
+import Load from '../../navigation/Loading/Loading.js'
 
 class JobList extends Component {
 
     state = {
-        jobs: []
+        jobs: [],
+        loading: true
     }
 
     constructor () {
@@ -14,7 +15,7 @@ class JobList extends Component {
     }
 
     componentDidMount() {
-        this.setState({ jobs: vagas });
+        this.setState({ jobs: vagas, loading: false });
     }
 
     jobRemoveHandler = (id, name) => {
@@ -26,7 +27,9 @@ class JobList extends Component {
     }
 
     render () {
-
+        if (this.state.loading == true)    {
+            return <Load/>
+        } 
         let vagasEncontradas = 
             this.state.jobs.map(vaga => {
                 return (
@@ -45,10 +48,8 @@ class JobList extends Component {
             })
 
         return (
-            <div className="container">
-                <div className="row"> 
-                    {vagasEncontradas}
-                </div>
+            <div className="row"> 
+                {vagasEncontradas}
             </div>
         )
     }
