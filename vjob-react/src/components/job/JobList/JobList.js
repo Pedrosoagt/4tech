@@ -18,7 +18,7 @@ class JobList extends Component {
     }
 
     jobRemoveHandler = (id, name) => {
-        window.confirm(`Deseja realmente excluir essa vaga id: ${name}?`);
+        window.confirm(`Deseja realmente excluir essa vaga ${name}?`);
     }
 
     jobUpdateHandler = (id) => {
@@ -32,10 +32,11 @@ class JobList extends Component {
                 return (
                     <div className="col-sm-12 col-md-6 col-lg-4 mb-3">    
                         <Card 
-                            name={vaga.name}
-                            description={vaga.description}
-                            salary={vaga.salary}
-                            area={vaga.area}
+                            vaga = {vaga}
+                            // name={vaga.name}
+                            // description={vaga.description}
+                            // salary={vaga.salary}
+                            // area={vaga.area}
                             updateHandler={() => this.jobUpdateHandler(vaga.id)}
                             removeHandler={() => this.jobRemoveHandler(vaga.id, vaga.name)}
                         ></Card>

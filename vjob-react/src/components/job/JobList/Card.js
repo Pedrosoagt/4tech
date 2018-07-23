@@ -11,11 +11,11 @@ const card = (props) => {
         <div className="card" style={{width:"22rem"}}>
             <img className="" src={dev} alt="Card image cap" height="180"/>
             <div className="card-body">
-                <h5 className="card-title">{props.name}</h5>
+                <h5 className="card-title">{props.vaga.name}</h5>
                 <b>Descrição:</b>
-                <p className="card-text">{props.description}</p>
+                <p className="card-text">{props.vaga.description}</p>
                 <b>Salário Base:</b>
-                <p>{props.salary}</p>
+                <p>{props.vaga.salary}</p>
                 <a href="" className="btn btn-warning" onClick={props.updateHandler}>
                     <i className="fas fa-edit"></i>
                 </a>
