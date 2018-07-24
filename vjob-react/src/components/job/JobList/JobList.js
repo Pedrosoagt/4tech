@@ -28,10 +28,29 @@ class JobList extends Component {
 
     jobRemoveHandler = (id, name) => {
         window.confirm(`Deseja realmente excluir essa vaga ${name}?`);
+
+        axios.delete('/jobs' + '/' + id)
+            .then( () => {
+                this.setState({id:id, loading: false})
+            })
+            .catch(error => {
+                console.error(error);
+            })
     }
 
-    jobUpdateHandler = (id) => {
+    jobUpdateHandler = (id, name, description, salary, area) => {
         window.alert(`Item atualizado id: ${id}`);
+        axios.put('/jobs' + '/' + id,)
+            .then( () => {
+                this.setState({
+                    id:id, 
+                    name: 'teste', 
+                    description: 'teste 2', 
+                    salary: '1234', 
+                    area: 'Testes'
+                    })
+                }
+            )
     }
 
     render () {
