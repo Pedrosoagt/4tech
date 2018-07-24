@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Card from './Card';
 import vagas from '../../../assets/jobs'; //json(bd) não mais usado 
-import Load from '../../navigation/Loading/Loading.js'
-import axios from 'axios'
+import Load from '../../navigation/Loading/Loading.js';
+import Formulario from '../../../components/job/InputJob/InputJob'
+import Collapse from  '../../../hoc/Collapse/Collapse'
+
+import axios from 'axios';
 
 class JobList extends Component {
 
@@ -11,8 +14,15 @@ class JobList extends Component {
         loading: true
     }
 
-    constructor () {
-        super();
+    // constructor () {
+    //     super();
+    // }
+
+    addItemToList = (newItem) => {
+        let currentJobs = this.state.jobs;
+        currentJobs.push(newItem);
+
+        this.setState({jobs: currentJobs});
     }
 
     componentDidMount() {
@@ -26,31 +36,37 @@ class JobList extends Component {
             })
     }
 
-    jobRemoveHandler = (id, name) => {
-        window.confirm(`Deseja realmente excluir essa vaga ${name}?`);
+    jobRemoveHandler = async (id, name) =>{
+        // let  foi = window.confirm(`Deseja realmente excluir essa vaga ${name}?`);
 
-        axios.delete('/jobs' + '/' + id)
-            .then( () => {
-                this.setState({id:id, loading: false})
+        // if (foi) {
+        //     await axios.delete('/jobs/' + id)
+        //     .then( response => {
+        //         console.log(`foi`)
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //     })
+        // }
+
+        //delete Adriano
+        if (window.confirm(`Deseja deletar esta vaga: ${name}`)) {
+            axios.delete('/jobs/' + id)
+                .then(res => {
+                    let vagasAtualizadas = this.state.jobs;
+                    const indiceRemovido = vagas.findIndex(item => item.id == id );
+
+                vagasAtualizadas.splice(indiceRemovido, 1);
+                this.setState({jobs: vagasAtualizadas})
             })
-            .catch(error => {
-                console.error(error);
+            .catch(error =>  {
+                console.error(`cheguei aqui, pq?`);
             })
+        }
     }
 
-    jobUpdateHandler = (id, name, description, salary, area) => {
+    jobUpdateHandler = (id) => {
         window.alert(`Item atualizado id: ${id}`);
-        axios.put('/jobs' + '/' + id,)
-            .then( () => {
-                this.setState({
-                    id:id, 
-                    name: 'teste', 
-                    description: 'teste 2', 
-                    salary: '1234', 
-                    area: 'Testes'
-                    })
-                }
-            )
     }
 
     render () {
@@ -76,8 +92,13 @@ class JobList extends Component {
             })
 
         return (
-            <div className="row"> 
-                {vagasEncontradas}
+            <div>
+                <Collapse>
+                    <Formulario addToList={this.addItemToList}/>
+                </Collapse>
+                <div className="row"> 
+                    {vagasEncontradas}
+                </div>
             </div>
         )
     }

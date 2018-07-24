@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import Container from './components/layout/Container/Container'
 import Header from './components/navigation/Header/Header.js';
 import JobList from './components/job/JobList/JobList';
-import Formulario from './components/job/InputJob/InputJob'
-import Collapse from  './hoc/Collapse/Collapse'
+import Main from './components/navigation/Main/Main';
+import About from './components/About/About';
+
+//react router dom imports
+import { Switch, Route } from 'react-router-dom';
 
 class App extends Component {
   render() {
@@ -12,13 +14,14 @@ class App extends Component {
       <div className="App">
         <Header/>
         <br/>
-        <Container>
-          <Collapse>
-            <Formulario/>
-          </Collapse>
+        <Main>
+          <Switch>
+            <Route exact path='/' component={ JobList }/>
+            <Route  path='/vagas' component={ JobList }/>
+            <Route  path='/about' component={ About }/>
+          </Switch>
           <br/>
-          <JobList/> 
-        </Container>
+        </Main>
       </div>
     );
   }
