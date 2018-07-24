@@ -22,10 +22,10 @@ module.exports = app => {
     app.get('/jobs/:id', async (req, res) => {
         try {
             const getUrlId = req.params.id;
-            const findJob = jobsCollection.doc(getUrlId);
+            const findJob = await jobsCollection.doc(getUrlId).get();
 
             if(findJob) {
-                return res.send(findJob.data());
+                return res.send(extractJob(findJob));
             } else {
                 return res.send(`nenhum job com id: ${getUrlId}`);
             }
@@ -48,36 +48,33 @@ module.exports = app => {
         }
     })
 
-    app.delete('/jobs/:id', async (req, res) => {
-        try {
-            const getId = req.params.id;
-            const del = jobsCollection.doc(getId);
-
-            if (del) {
-                del.delete();    
-                return res.send(`A vaga com o id ${req.params.id} foi excluída com successo`);
-            } else {
-                return res.send(`Vaga com o id ${req.params.id} não encontrada`)
-            }  
-        }catch (error) {
-            return res.status(500).send(error);
-        }
-    })
-
     app.put('/jobs/:id', async (req, res) => {
         try {
             if (!req.body) {
                 return res.status(403).send('Para alterar um usuário, é necessário passar algum valor');
             }
-            let index = await jobs.findIndex(job => job.id === req.params.id);
-            if (index >= 0) {
-                Object.keys(req.body).forEach(job => {
-                    jobs[index][job] = req.body[job]
-                })
-                return res.send(`Vaga com o id ${req.params.id} alterada com sucesso`);
+            const jobDoc = await jobsCollection.doc(req.params.id).update(req.body);
+            if (jobDoc) {
+                return res.send(`Vaga ${req.params.id} foi atualizada com sucesso!`);
+            } else {
+                return res.send(`A vaga ${req.params.id} não foi encontrada`);
             }
-            return res.send("nao foi encontrado vaga com esse id");
         } catch (error) {
+            return res.status(500).send(error);
+        }
+    })
+
+    app.delete('/jobs/:id', async (req, res) => {
+        try {
+            const getId = req.params.id;
+            const del = await jobsCollection.doc(getId).delete();
+
+            if (del) {
+                return res.send(`A vaga com o id ${getId} foi excluída com successo`);
+            } else {
+                return res.send(`Vaga com o id ${getId} não encontrada`)
+            }  
+        }catch (error) {
             return res.status(500).send(error);
         }
     })
@@ -117,6 +114,10 @@ module.exports = app => {
     //     return res.send(jobs);
     // })
 
+// app.get('/jobs/:id', async (req, res) => {
+    //     return res.send(jobs.find(el => el.id === req.params.id));
+    // })
+
 // app.post('/jobs', async (req, res) => {
     //     try {
     //         let jobsLength = jobs.length;
@@ -129,6 +130,24 @@ module.exports = app => {
     //     }
     // })
 
+    // app.put('/jobs/:id', async (req, res) => {
+    //     try {
+    //         if (!req.body) {
+    //             return res.status(403).send('Para alterar um usuário, é necessário passar algum valor');
+    //         }
+    //         let index = await jobs.findIndex(job => job.id === req.params.id);
+    //         if (index >= 0) {
+    //             Object.keys(req.body).forEach(job => {
+    //                 jobs[index][job] = req.body[job]
+    //             })
+    //             return res.send(`Vaga com o id ${req.params.id} alterada com sucesso`);
+    //         }
+    //         return res.send("nao foi encontrado vaga com esse id");
+    //     } catch (error) {
+    //         return res.status(500).send(error);
+    //     }
+    // })
+
     // app.delete('/jobs/:id', (req, res) => {
     //     try {
     //         let length = jobs.length;
@@ -138,8 +157,4 @@ module.exports = app => {
     //     } catch (error) {
     //         return res.status(500).send(error);        
     //     }
-    // })
-
-    // app.get('/jobs/:id', async (req, res) => {
-    //     return res.send(jobs.find(el => el.id === req.params.id));
     // })
