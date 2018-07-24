@@ -35,18 +35,28 @@ module.exports = app => {
     })
 
     app.post('/jobs', async (req, res) => {
-        try {
-            const fbReturn = await jobsCollection.doc().set(req.body);
-
-            if (fbReturn) {
-                return res.send('success');
-            } else {
-                throw Error;
-            } 
-        } catch(error) {
-            return res.status(500).send(error);
-        }
+        jobsCollection.add(req.body)
+            .then(ref => {
+                return res.send(ref.id);
+            })
+            .catch(error => {
+                return res.status(500).send(error);
+            })
     })
+
+    // app.post('/jobs', async (req, res) => {
+    //     try {
+    //         const fbReturn = await jobsCollection.doc().set(req.body);
+
+    //         if (fbReturn) {
+    //             return res.send('success');
+    //         } else {
+    //             throw Error;
+    //         } 
+    //     } catch(error) {
+    //         return res.status(500).send(error);
+    //     }
+    // })
 
     app.put('/jobs/:id', async (req, res) => {
         try {
