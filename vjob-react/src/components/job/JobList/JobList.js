@@ -76,7 +76,7 @@ class JobList extends Component {
         let vagasEncontradas = 
             this.state.jobs.map((vaga, index) => {
                 return (
-                    <div className="col-sm-12 col-md-6 col-lg-4 mb-3">    
+                    <div className="col-sm-12 col-md-6 col-lg-4 mb-3"> 
                         <Card 
                             key={index}
                             vaga={vaga}

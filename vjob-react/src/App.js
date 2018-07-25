@@ -20,7 +20,6 @@ class App extends Component {
             <Route  path='/vagas' component={ JobList }/>
             <Route  path='/about' component={ About }/>
           </Switch>
-          <br/>
         </Main>
       </div>
     );
