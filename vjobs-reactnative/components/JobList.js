@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, 
-         Text, 
-         View, 
-         SafeAreaView, 
-         FlatList, 
-         Image, 
-         TouchableHighlight } from 'react-native';
+import { 
+        StyleSheet, 
+        Text, 
+        View, 
+        SafeAreaView, 
+        FlatList, 
+        Image, 
+        TouchableHighlight,
+} from 'react-native';
 import { getJobs } from '../networking/API';
 
 const img = require('../assets/images/logo-h-vjobs.png');
@@ -26,15 +28,15 @@ export default class JobList extends Component {
   renderHeader() {
   return(
     <Image
-    style={{margin:16, alignSelf:'center'}}
-    source={img}/>
+        style={{margin:16, alignSelf:'center'}}
+        source={img}/>
   )
 }
 
   renderItem(vaga) {
     return (
         <TouchableHighlight
-            onPress={() => this.props.navigation.navigate('JobDetails', {job: vaga})}>
+            onPress={() => this.props.navigation.navigate('JobDetails', { job: vaga })}>
             <Text style={{
                 paddingHorizontal: 16,
                 paddingVertical: 8,
@@ -42,8 +44,9 @@ export default class JobList extends Component {
                 fontWeight: 'bold',
                 borderWidth: 1,
                 borderColor: '#ccc',
-                backgroundColor: '#eee'}}>
-                {vaga.name}
+                backgroundColor: '#eee'
+            }}>
+                { vaga.name }
             </Text>
         </TouchableHighlight>
     );
@@ -62,13 +65,14 @@ export default class JobList extends Component {
         ListHeaderComponent={() => this.renderHeader()}
         ItemSeparatorComponent={() => <View style={separatorStyle}/>}
         keyExtractor={(item) => `${item.id}`}
-      />);
+      />
+    );
   }
  
   render() {
     return (
       <SafeAreaView style={styles.container}>
-       { this.renderList() }
+            { this.renderList() }
      </SafeAreaView>
     );
   }
