@@ -1,5 +1,7 @@
 'use strict';
 
+const auth = require('../../config/security/tokenValidator');
+
 const Job = require('../../model/job.js');
 
 module.exports = app => {
@@ -34,7 +36,7 @@ module.exports = app => {
         }
     })
 
-    app.post('/jobs', async (req, res) => {
+    app.post('/jobs', auth, async (req, res, next) => {
         jobsCollection.add(req.body)
             .then(ref => {
                 return res.send(ref.id);
@@ -44,21 +46,7 @@ module.exports = app => {
             })
     })
 
-    // app.post('/jobs', async (req, res) => {
-    //     try {
-    //         const fbReturn = await jobsCollection.doc().set(req.body);
-
-    //         if (fbReturn) {
-    //             return res.send('success');
-    //         } else {
-    //             throw Error;
-    //         } 
-    //     } catch(error) {
-    //         return res.status(500).send(error);
-    //     }
-    // })
-
-    app.put('/jobs/:id', async (req, res) => {
+    app.put('/jobs/:id', auth, async (req, res, next) => {
         try {
             if (!req.body) {
                 return res.status(403).send('Para alterar um usuário, é necessário passar algum valor');
@@ -74,7 +62,7 @@ module.exports = app => {
         }
     })
 
-    app.delete('/jobs/:id', async (req, res) => {
+    app.delete('/jobs/:id', auth, async (req, res, next) => {
         try {
             const getId = req.params.id;
             const del = await jobsCollection.doc(getId).delete();
@@ -154,6 +142,21 @@ module.exports = app => {
     //         }
     //         return res.send("nao foi encontrado vaga com esse id");
     //     } catch (error) {
+    //         return res.status(500).send(error);
+    //     }
+    // })
+
+    //post no bd que não retorna o id
+    // app.post('/jobs', async (req, res) => {
+    //     try {
+    //         const fbReturn = await jobsCollection.doc().set(req.body);
+
+    //         if (fbReturn) {
+    //             return res.send('success');
+    //         } else {
+    //             throw Error;
+    //         } 
+    //     } catch(error) {
     //         return res.status(500).send(error);
     //     }
     // })
