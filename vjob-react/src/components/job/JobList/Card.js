@@ -1,8 +1,8 @@
 import React from 'react';
 
 import dev from '../../../assets/images/developer.png';
-import designer from '../../../assets/images/designer.png';
-import tester from '../../../assets/images/tester.png';
+// import designer from '../../../assets/images/designer.png';
+// import tester from '../../../assets/images/tester.png';
 
 const card = (props) => {
     let imagem = null;
