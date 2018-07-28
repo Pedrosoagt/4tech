@@ -5,12 +5,11 @@ import dev from '../../../assets/images/developer.png';
 // import tester from '../../../assets/images/tester.png';
 
 const card = (props) => {
-    let imagem = null;
     return (
         <div>
             <br/>
             <div className="card" style={{width:"22rem"}}>
-                <img className="" src={dev} alt="Card image cap" height="180"/>
+                <img className="" src={dev} alt="representacao da vaga" height="180"/>
                 <div className="card-body">
                     <h5 className="card-title">{props.vaga.name}</h5>
                     <b>Descrição:</b>

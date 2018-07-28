@@ -5,6 +5,7 @@ import Load from '../../navigation/Loading/Loading.js';
 import Formulario from '../../../components/job/InputJob/InputJob'
 import Collapse from  '../../../hoc/Collapse/Collapse'
 
+
 import axios from 'axios';
 
 class JobList extends Component {
@@ -37,19 +38,24 @@ class JobList extends Component {
     }
 
     jobRemoveHandler = async (id, name) =>{
-        // let  foi = window.confirm(`Deseja realmente excluir essa vaga ${name}?`);
 
-        // if (foi) {
+        // if (window.confirm(`Deseja realmente excluir essa vaga ${name}?`)) {
         //     await axios.delete('/jobs/' + id)
         //     .then( response => {
-        //         console.log(`foi`)
+        //         console.log(response)
         //     })
         //     .catch(error => {
         //         console.error(error);
         //     })
         // }
 
-        //delete Adriano
+        //method delete Adriano ()
+        const axiosConfig = {
+            headers: {
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token')
+            }
+        }
+
         if (window.confirm(`Deseja deletar esta vaga: ${name}`)) {
             axios.delete('/jobs/' + id)
                 .then(res => {
@@ -60,6 +66,8 @@ class JobList extends Component {
                 this.setState({jobs: vagasAtualizadas})
             })
             .catch(error =>  {
+                if(error.res.status == 401)
+                    alert('Não autorizado');
                 console.error(`cheguei aqui, pq?`);
             })
         }
